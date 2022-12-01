@@ -3,15 +3,6 @@ import axios from "axios";
 import queryString from "query-string";
 import { REACT_APP_API_HOST, LocalStorageKeys } from "../constants";
 import { IAPIErrorResponseBody } from "./types";
-import { randomPokemonId } from "../utils";
-
-export const getPokemon = async () => {
-  const res = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${randomPokemonId()}`
-  ).then((res) => res.json());
-
-  return res;
-};
 
 export const getUrl = (
   path: string,

@@ -1,28 +1,39 @@
-import { useState, useEffect } from 'react';
-import { getPokemon } from '../api';
+import { useState, useEffect } from "react";
+import { fetchPokemon } from "../action/pokemon";
+import { useAppDispatch, useAppselector } from "../hooks/reduxHooks";
 
 export const usePokemon = () => {
-	const [helth, setHelth] = useState(100);
-	const [attackPoint, setAttackPoint] = useState(0);
-	const [info, setInfo] = useState({ name: '', img: '' });
+  const dispatch = useAppDispatch();
+  const pokemon = useAppselector((state) => state.pokemon);
+  const [helth, setHelth] = useState(100);
+  const [attackPoint, setAttackPoint] = useState(0);
+  const [info, setInfo] = useState({ name: "", img: "" });
 
-	useEffect(() => {
-		getPokemon().then((res) => {
-			setHelth(100);
-			setInfo({ name: res.species.name, img: res.sprites.front_default });
-		});
-	}, []);
+  useEffect(() => {
+    dispatch(fetchPokemon(Math.floor(Math.random() * 100).toString()));
+  }, [dispatch]);
+  useEffect(() => {
+    setInfo({
+      name: pokemon.pokemon?.name || "",
+      img: pokemon.pokemon?.sprites.back_default || "",
+    });
+  }, [pokemon]);
 
-	const demage = (demage: number) => {
-		setHelth((prev) => prev - demage);
-	};
+  const demage = (demage: number) => {
+    setHelth((prev) => prev - demage);
+  };
 
-	const newPokemon = async () => {
-		await getPokemon().then((res) => {
-			setHelth(100);
-			setInfo({ name: res.species.name, img: res.sprites.front_default });
-		});
-	};
+  const newPokemon = () => {
+    dispatch(fetchPokemon(Math.floor(Math.random() * 100).toString()));
+  };
 
-	return { setAttackPoint, demage, helth, attackPoint, info, newPokemon, setHelth };
+  return {
+    setAttackPoint,
+    demage,
+    helth,
+    attackPoint,
+    info,
+    newPokemon,
+    setHelth,
+  };
 };

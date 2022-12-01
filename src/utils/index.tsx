@@ -1,6 +1,2 @@
-export const randomPoint = () => {
-  const number = Math.floor(Math.random() * 10);
-
-  return number > 6 ? 6 : number;
-};
-export const randomPokemonId = () => Math.floor(Math.random() * 100);
+import type { AnyAction } from "@reduxjs/toolkit";
+export const isError = (action: AnyAction) => action.type.endsWith("rejected");
